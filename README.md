@@ -48,13 +48,13 @@ The source contains 9 relational CSV files covering:
 The transformation workflow follows a layered dbt architecture:
 
 RAW
-↓
+->
 STAGING
-↓
+->
 INTERMEDIATE
-↓
+->
 MARTS
-↓
+->
 ANALYSES
 
 ### Raw Layer
