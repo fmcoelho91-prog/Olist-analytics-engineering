@@ -498,9 +498,9 @@ The final analytical layer includes reusable SQL analyses covering:
 These queries are stored in the `analyses/` directory and use the final dimensional marts rather than the raw source tables.
 
 ---
-
 ## Project Structure
 
+```text
 models/
 │
 ├── staging/
@@ -530,7 +530,6 @@ models/
     ├── dim_products.sql
     └── dim_sellers.sql
 
-
 analyses/
 │
 ├── delivery_vs_review.sql
@@ -541,7 +540,6 @@ analyses/
 ├── revenue_concentration_sellers.sql
 └── check_product_categories.sql
 
-
 tests/
 │
 ├── assert_delivery_time_non_negative.sql
@@ -549,12 +547,11 @@ tests/
 ├── assert_non_delayed_flag_non_positive_delay.sql
 └── grain / uniqueness validation tests
 
-
 images/
 │
 └── dbt lineage screenshots
+```
 
----
 
 ## Future Improvements
 
