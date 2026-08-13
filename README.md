@@ -350,7 +350,7 @@ Fact / Dimension
 
 ### dbt Lineage
 
-![dbt lineage](images/dbt-lineage.png)
+![dbt lineage](https://github.com/fmcoelho91-prog/Olist-analytics-engineering/blob/main/images/imagesdbt-lineage-overview.png.png)
 
 ---
 
