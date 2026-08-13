@@ -1,0 +1,146 @@
+version: 2
+
+models:
+  - name: stg_orders
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+
+      - name: order_status
+        data_tests:
+          - not_null
+
+  - name: stg_order_items
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                 to: ref('stg_orders')
+                 field: order_id
+
+      - name: order_item_id
+        data_tests:
+          - not_null
+
+      - name: product_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                 to: ref('stg_products')
+                 field: product_id
+
+      - name: seller_id
+        data_tests:
+          - not_null
+          - relationships: 
+              arguments:
+                to: ref('stg_sellers')
+                field: seller_id
+
+  - name: stg_order_payments
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+
+      - name: payment_sequential
+        data_tests:
+          - not_null
+
+      - name: payment_type
+        data_tests:
+          - not_null
+
+      - name: payment_value
+        data_tests:
+          - not_null
+
+  - name: stg_customers
+    columns:
+      - name: customer_id
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_unique_id
+        data_tests:
+          - not_null
+
+  - name: stg_products
+    columns:
+      - name: product_id
+        data_tests:
+          - not_null
+          - unique 
+
+  - name: stg_sellers
+    columns:
+      - name: seller_id
+        data_tests:
+          - not_null
+          - unique
+
+  - name: stg_order_reviews
+    columns:
+      - name: review_id
+        data_tests:
+          - not_null
+
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+
+      - name: review_score
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+                quote: false
+
+  - name: stg_geolocation
+    columns:
+      - name: geolocation_zip_code_prefix
+        data_tests:
+          - not_null
+
+      - name: geolocation_lat
+        data_tests:
+          - not_null
+
+      - name: geolocation_lng
+        data_tests:
+          - not_null
+
+  - name: stg_product_category_translation
+    columns:
+      - name: product_category_name
+        data_tests:
+          - not_null
+          - unique
+
+      - name: product_category_name_english
+        data_tests:
+          - not_null
+          - unique

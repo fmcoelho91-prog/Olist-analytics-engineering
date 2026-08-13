@@ -1,0 +1,158 @@
+version: 2
+
+models:
+
+  - name: fct_orders
+    description: >
+      Order-level fact table containing one row per order, enriched with
+      payment, item, review and delivery performance metrics.
+
+    columns:
+      - name: order_id
+        description: Unique identifier of the order.
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Customer identifier associated with the order.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_id
+
+      - name: order_status
+        description: Current status of the order.
+
+      - name: order_purchase_timestamp
+        description: Timestamp when the order was placed.
+
+      - name: total_item_value
+        description: Total value of items included in the order.
+
+      - name: total_freight_value
+        description: Total freight value associated with the order.
+
+      - name: total_payment_value
+        description: Total amount paid for the order.
+
+      - name: avg_review_score
+        description: Average review score associated with the order.
+
+      - name: delivery_delay_days
+        description: >
+          Difference in days between the actual delivery date and the estimated
+          delivery date. Positive values indicate late delivery.
+
+      - name: delivery_time_days
+        description: Number of days between order purchase and actual delivery.
+
+      - name: is_delayed
+        description: >
+          Indicates whether the order was delivered after the estimated delivery date.
+
+
+  - name: fct_order_items
+    description: >
+      Item-level fact table containing one row per item within an order.
+
+    columns:
+      - name: order_id
+        description: Order identifier associated with the item.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_orders')
+                field: order_id
+
+      - name: order_item_id
+        description: Sequential identifier of the item within the order.
+
+      - name: product_id
+        description: Product identifier associated with the order item.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_products')
+                field: product_id
+
+      - name: seller_id
+        description: Seller identifier associated with the order item.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_sellers')
+                field: seller_id
+
+      - name: price
+        description: Item price.
+
+      - name: freight_value
+        description: Freight value allocated to the item.
+
+
+  - name: dim_customers
+    description: >
+      Customer dimension containing one row per customer_id with geographic
+      attributes and the persistent customer_unique_id.
+
+    columns:
+      - name: customer_id
+        description: Unique identifier used to associate a customer record with an order.
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_unique_id
+        description: Persistent identifier used to identify the same customer across orders.
+
+      - name: customer_city
+        description: Customer city.
+
+      - name: customer_state
+        description: Customer state.
+
+
+  - name: dim_products
+    description: >
+      Product dimension containing one row per product, including product
+      attributes and the English translation of its category.
+
+    columns:
+      - name: product_id
+        description: Unique identifier of the product.
+        tests:
+          - not_null
+          - unique
+
+      - name: product_category_name
+        description: Original product category name.
+
+      - name: product_category_name_english
+        description: English translation of the product category.
+
+      - name: product_weight_g
+        description: Product weight in grams.
+
+
+  - name: dim_sellers
+    description: >
+      Seller dimension containing one row per seller with geographic attributes.
+
+    columns:
+      - name: seller_id
+        description: Unique identifier of the seller.
+        tests:
+          - not_null
+          - unique
+
+      - name: seller_city
+        description: Seller city.
+
+      - name: seller_state
+        description: Seller state.
